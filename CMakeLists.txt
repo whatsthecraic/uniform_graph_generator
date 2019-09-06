@@ -43,7 +43,7 @@ endif()
 add_subdirectory(lib/common)
 
 add_executable(ugg ugg.cpp lib/cxxopts.hpp lib/cuckohash.hpp)
-target_link_libraries(ugg PUBLIC libcommon)
+target_link_libraries(ugg PRIVATE libcommon)
 
 get_c_compiler_flags(ugg c_flags)
 get_cxx_compiler_flags(ugg cxx_flags)
