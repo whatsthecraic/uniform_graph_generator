@@ -11,7 +11,7 @@
 #include "lib/common/filesystem.hpp"
 #include "lib/common/quantity.hpp"
 #include "lib/cxxopts.hpp"
-#include "lib/cuckohash.hpp"
+#include "lib/cuckoohash.hpp"
 
 using namespace common;
 using namespace std;

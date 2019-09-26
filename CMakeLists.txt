@@ -42,7 +42,7 @@ endif()
 # Create the list of objects
 add_subdirectory(lib/common)
 
-add_executable(ugg ugg.cpp lib/cxxopts.hpp lib/cuckohash.hpp)
+add_executable(ugg ugg.cpp lib/cxxopts.hpp lib/cuckoohash.hpp)
 target_link_libraries(ugg PRIVATE libcommon)
 
 get_c_compiler_flags(ugg c_flags)
