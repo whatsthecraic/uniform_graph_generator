@@ -6,6 +6,7 @@
 #include <iostream>
 #include <random>
 #include <string>
+#include <unordered_set>
 
 #include "lib/common/error.hpp"
 #include "lib/common/filesystem.hpp"
@@ -88,6 +89,8 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 
+#define SEQUENTIAL
+#if !defined(SEQUENTIAL)
 static vector<Edge> make_edges(){
     cuckoohash_map<Edge, bool> edges_created;
 
@@ -125,6 +128,32 @@ static vector<Edge> make_edges(){
 //    lst_edges.unlock(); // not sure whether it's necessary
     return edges;
 }
+#else
+static vector<Edge> make_edges(){
+    unordered_set<Edge> edges_created;
+    std::mt19937_64 random_generator { g_seed };
+    uniform_int_distribution<uint64_t> uniform_distribution {0, g_num_vertices -1}; // [a, b]
+    uint64_t num_edges_created_insofar = 0;
+
+    while(num_edges_created_insofar < g_num_edges){
+        Edge edge { uniform_distribution(random_generator), uniform_distribution(random_generator) };
+        if(edge.m_source == edge.m_destination) continue; // try again
+        if(edges_created.count(edge) == 0){
+            edges_created.insert(edge);
+            num_edges_created_insofar++;
+        }
+    }
+
+    vector<Edge> edges;
+    edges.reserve(edges_created.size());
+    for(auto& it_edge : edges_created){
+        edges.push_back(it_edge);
+    }
+    assert(edges.size() == g_num_edges && "The number of edges created does not match what the user requested");
+
+    return edges;
+}
+#endif
 
 static vector<uint64_t> make_vertices(){
     vector<uint64_t> vertices;
